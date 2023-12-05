@@ -8,8 +8,8 @@ pipeline {
         }
         stage('clean previous build') {
             steps {
-                sh 'docker container stop flask-app-run'
-                sh 'docker rm -f flask-app-run'
+                sh 'docker container stop --no-run-if-empty flask-app-run'
+                sh 'docker rm -f --no-run-if-empty flask-app-run'
                 sh 'y | docker system prune -a'
             }
         }
