@@ -17,5 +17,6 @@ spec:
       containers:
       - name: flask-app
         image: kdev1234/flask-market:0.0.{{ .Values.imageName }}.RELEASE
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
