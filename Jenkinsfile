@@ -24,5 +24,11 @@ pipeline {
                 sh 'docker run -d --rm --name flask-app-run -p 5000:5000 kdev1234/flask-market:0.0.${BUILD_NUMBER}.RELEASE'
             }
         }
+        stage('run helm kubernetes') {
+            steps {
+                echo 'helm me!!!!'
+                sh 'helm install --set imageName=${BUILD_NUMBER} flask-helm-release flask-helm/ --values flask-helm/values.yaml'
+            }
+        }
     }
 }
