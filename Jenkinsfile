@@ -24,6 +24,12 @@ pipeline {
                 sh 'docker run -d --rm --name flask-app-run -p 5000:5000 kdev1234/flask-market:0.0.${BUILD_NUMBER}.RELEASE'
             }
         }
+        stage('push image to hub') {
+            steps {
+                echo 'running...'
+                sh 'docker push kdev1234/flask-market:0.0.${BUILD_NUMBER}.RELEASE'
+            }
+        }
         stage('run helm kubernetes') {
             steps {
                 echo 'helm me!!!!'
