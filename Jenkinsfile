@@ -25,7 +25,8 @@ pipeline {
             }
         }
         stage('push image to hub') {
-            steps {
+            // This step should not normally be used in your script. Consult the inline help for details.
+            withDockerRegistry(credentialsId: '2491d34e-57f5-4c65-9756-72d2f81a186d') {
                 echo 'running...'
                 sh 'docker push kdev1234/flask-market:0.0.${BUILD_NUMBER}.RELEASE'
             }
