@@ -9,7 +9,7 @@ pipeline {
         stage('build') {
             steps {
                 echo 'building...'
-                sh 'sudo docker build -t kdev1234/flask-market:0.0.3.RELEASE .'
+                sh 'docker build -t kdev1234/flask-market:0.0.3.RELEASE .'
             }
         }
         // stage('run image') {
