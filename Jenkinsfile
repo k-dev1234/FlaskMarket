@@ -8,7 +8,8 @@ pipeline {
         }
         stage('clean previous build') {
             steps {
-                sh 'docker rm -f flask-app-run && echo "container myjob removed" || echo "container myjob does not exist"'
+                sh 'docker container stop flask-app-run'
+                sh 'docker rm -f flask-app-run'
                 sh 'y | docker system prune -a'
             }
         }
