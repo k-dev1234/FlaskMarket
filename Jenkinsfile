@@ -36,7 +36,7 @@ pipeline {
         stage('run helm kubernetes') {
             steps {
                 echo 'helm me!!!!'
-                sh 'helm install --set imageName=${BUILD_NUMBER} flask-helm-release flask-helm/ --values flask-helm/values.yaml'
+                sh 'helm upgrade --set imageName=${BUILD_NUMBER} flask-helm-release flask-helm/ --values flask-helm/values.yaml'
             }
         }
     }
