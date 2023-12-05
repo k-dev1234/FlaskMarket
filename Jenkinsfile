@@ -9,7 +9,7 @@ pipeline {
         stage('build') {
             steps {
                 echo 'building...'
-                sh '[ "$( docker ps | grep kdev* | awk "{print $1}" )" == "" ] && echo "" || xargs docker stop --force'
+                sh '[ "$( docker ps | grep kdev* | awk "{print $1}" )" == "" ] && echo "" || xargs docker stop'
                 sh 'docker build -t kdev1234/flask-market:0.0.${BUILD_NUMBER}.RELEASE .'
             }
         }
