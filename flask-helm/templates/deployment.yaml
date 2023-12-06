@@ -20,4 +20,4 @@ spec:
         image: kdev1234/flask-market:0.0.{{ .Values.imageName }}.RELEASE
         imagePullPolicy: Always
         ports:
-        - containerPort: 5000
+        - containerPort: 80
