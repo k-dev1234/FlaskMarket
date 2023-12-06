@@ -37,7 +37,7 @@ pipeline {
             steps {
                 withKubeConfig([credentialsId: 'credentialsId', serverUrl: 'https://192.168.49.2:8443']) {
                     echo 'helm me!!!!'
-                    sh 'helm upgrade --set imageName=${BUILD_NUMBER} flask-helm-release flask-helm/ --values flask-helm/values.yaml'
+                    sh 'helm upgrade --install --set imageName=${BUILD_NUMBER} flask-helm-release flask-helm/ --values flask-helm/values.yaml'
                 }
             }
         }
