@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_USER     = credentials('docker_username')
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -15,7 +18,8 @@ pipeline {
         stage('build') {
             steps {
                 echo 'building...'
-                sh 'docker build -t kdev1234/flask-market:0.0.${BUILD_NUMBER}.RELEASE .'
+                sh 'docker build -t ${DOCKER_USER}/flask-market:0.0.${BUILD_NUMBER} .'
+                sh 'docker build -t ${DOCKER_USER}/flask-market:latest .'
             }
         }
         // stage('run image') {
@@ -27,19 +31,20 @@ pipeline {
         stage('push image to hub') {
             steps {
                 // This step should not normally be used in your script. Consult the inline help for details.
-                withDockerRegistry(credentialsId: '2491d34e-57f5-4c65-9756-72d2f81a186d', url: 'https://index.docker.io/v1/') {
+                withDockerRegistry(credentialsId: 'docker-token', url: 'https://index.docker.io/v1/') {
                     echo 'running...'
-                    sh 'docker push kdev1234/flask-market:0.0.${BUILD_NUMBER}.RELEASE'
+                    sh 'docker push ${DOCKER_USER}/flask-market:0.0.${BUILD_NUMBER}'
+                    sh 'docker push ${DOCKER_USER}/flask-market:latest'
                 }
             }
         }
-        stage('run helm kubernetes') {
-            steps {
-                withKubeConfig([credentialsId: 'credentialsId', serverUrl: 'https://192.168.49.2:8443']) {
-                    echo 'helm me!!!!'
-                    sh 'helm upgrade --install --set imageName=${BUILD_NUMBER} flask-helm-release flask-helm/ --values flask-helm/values.yaml'
-                }
-            }
-        }
+        // stage('run helm kubernetes') {
+        //     steps {
+        //         withKubeConfig([credentialsId: 'credentialsId', serverUrl: 'https://192.168.49.2:8443']) {
+        //             echo 'helm me!!!!'
+        //             sh 'helm upgrade --install --set imageName=${BUILD_NUMBER} flask-helm-release flask-helm/ --values flask-helm/values.yaml'
+        //         }
+        //     }
+        // }
     }
 }
