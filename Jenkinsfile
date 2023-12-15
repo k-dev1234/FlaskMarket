@@ -9,7 +9,7 @@ pipeline {
         stage('clean previous build') {
             steps {
                 sh 'docker stop flask-app-run || true && docker rm flask-app-run || true'
-                sh 'y | docker system prune -a'
+                sh 'echo "y" | docker system prune -a'
             }
         }
         stage('build') {
