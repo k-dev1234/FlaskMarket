@@ -14,17 +14,17 @@ jobs:
 
     steps:
     - name: Checkout Github
-    - uses: actions/checkout@v3
+      uses: actions/checkout@v3
 
     - name: Log in to Docker Hub
-    uses: docker/login-action@v3
-    with:
-      username: ${{ secrets.DOCKERHUB_USERNAME }}
-      password: ${{ secrets.DOCKERHUB_TOKEN }}
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Build and push
-    uses: docker/build-push-action@v3
-    with:
-      context: .
-      push: true
-      tags: ${{ secrets.DOCKERHUB_USERNAME  }}/flask-market:0.0.${{ github.run_number }} ${{ secrets.DOCKERHUB_USERNAME  }}/flask-market:latest
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME  }}/flask-market:0.0.${{ github.run_number }} , ${{ secrets.DOCKERHUB_USERNAME  }}/flask-market:latest
