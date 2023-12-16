@@ -6,6 +6,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                sshagent(credentials: ['ssh-key']) {
+                    sh 'ssh 192.168.2.243'
+                }
+            }
+        }
+        stage('Checkout') {
+            steps {
                 checkout scm
             }
         }
@@ -22,12 +29,6 @@ pipeline {
                 sh 'docker build -t ${DOCKER_USER}/flask-market:latest .'
             }
         }
-        // stage('run image') {
-        //     steps {
-        //         echo 'running...'
-        //         sh 'docker run -d --rm --name flask-app-run -p 5000:5000 kdev1234/flask-market:0.0.${BUILD_NUMBER}.RELEASE'
-        //     }
-        // }
         stage('push image to hub') {
             steps {
                 // This step should not normally be used in your script. Consult the inline help for details.
