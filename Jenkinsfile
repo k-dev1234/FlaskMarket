@@ -2,15 +2,10 @@ pipeline {
     agent any
     environment {
         DOCKER_USER     = credentials('docker_username')
+        sship     = credentials('SSH_IP')
+        sshuser = credentials('SSH_USERNAME')
     }
     stages {
-        stage('Checkout') {
-            steps {
-                sshagent(credentials: ['ssh-key']) {
-                    sh 'ssh 192.168.2.243'
-                }
-            }
-        }
         stage('Checkout') {
             steps {
                 checkout scm
@@ -39,13 +34,19 @@ pipeline {
                 }
             }
         }
-        // stage('run helm kubernetes') {
-        //     steps {
-        //         withKubeConfig([credentialsId: 'credentialsId', serverUrl: 'https://192.168.49.2:8443']) {
-        //             echo 'helm me!!!!'
-        //             sh 'helm upgrade --install --set imageName=${BUILD_NUMBER} flask-helm-release flask-helm/ --values flask-helm/values.yaml'
-        //         }
-        //     }
-        // }
+        stages {
+            stage('ssh login') {
+                steps {
+                    sshagent(credentials: ['ssh-key']) {
+                        sh '''ssh -o StrictHostKeyChecking=no -l ${sshuser} ${sship} bash -c \'"
+                            if [ -d  \''~/FlaskMarket'\' ]; then sudo rm -rf ~/FlaskMarket/; fi
+                            git clone -b kolla-build --single-branch https://github.com/k-dev1234/FlaskMarket.git
+                            cd ~/FlaskMarket/
+                            helm upgrade --install flask-helm-release flask-helm/ --values flask-helm/values.yaml
+                        "\''''
+                    }
+                }
+            }
+        }
     }
 }
