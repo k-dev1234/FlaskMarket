@@ -41,7 +41,7 @@ pipeline {
                         if [ -d  \''~/FlaskMarket'\' ]; then sudo rm -rf ~/FlaskMarket/; fi
                         git clone -b kolla-build --single-branch https://github.com/k-dev1234/FlaskMarket.git
                         cd ~/FlaskMarket/
-                        helm upgrade --install --set imageName=${BUILD_NUMBER} flask-helm-release flask-helm/ --values flask-helm/values.yaml
+                        helm upgrade --install --set imageName=\'${BUILD_NUMBER}\' flask-helm-release flask-helm/ --values flask-helm/values.yaml
                     "\''''
                 }
             }
