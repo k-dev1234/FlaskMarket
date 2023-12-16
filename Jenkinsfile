@@ -34,19 +34,17 @@ pipeline {
                 }
             }
         }
-        stages {
-            stage('ssh login') {
-                steps {
-                    sshagent(credentials: ['ssh-key']) {
-                        sh '''ssh -o StrictHostKeyChecking=no -l ${sshuser} ${sship} bash -c \'"
-                            if [ -d  \''~/FlaskMarket'\' ]; then sudo rm -rf ~/FlaskMarket/; fi
-                            git clone -b kolla-build --single-branch https://github.com/k-dev1234/FlaskMarket.git
-                            cd ~/FlaskMarket/
-                            helm upgrade --install flask-helm-release flask-helm/ --values flask-helm/values.yaml
-                        "\''''
-                    }
+        stage('ssh login and run helm') {
+            steps {
+                sshagent(credentials: ['ssh-key']) {
+                    sh '''ssh -o StrictHostKeyChecking=no -l ${sshuser} ${sship} bash -c \'"
+                        if [ -d  \''~/FlaskMarket'\' ]; then sudo rm -rf ~/FlaskMarket/; fi
+                        git clone -b kolla-build --single-branch https://github.com/k-dev1234/FlaskMarket.git
+                        cd ~/FlaskMarket/
+                        helm upgrade --install flask-helm-release flask-helm/ --values flask-helm/values.yaml
+                    "\''''
                 }
             }
-        }
+        } 
     }
 }
