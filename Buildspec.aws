@@ -1,0 +1,23 @@
+version: 0.2
+
+env:
+  parameter-store:
+     DOCKER_REGISTRY_APP_NAME: /flask-market/docker-credential/app-name
+     DOCKER_REGISTRY_USERNAME: /flask-market/docker-credential/username
+     DOCKER_REGISTRY_PASSWORD: /flask-market/docker-credential/password
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+  pre_build:
+    commands:
+      - pip install -r requirements.txt
+  build:
+    commands:
+      - echo "Building docker"
+      - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
+      - docker build -t $DOCKER_REGISTRY_USERNAME/$DOCKER_REGISTRY_APP_NAME:0.0.$CODEBUILD_BUILD_NUMBER.RELEASE .
+      - docker push $DOCKER_REGISTRY_USERNAME/$DOCKER_REGISTRY_APP_NAME:0.0.$CODEBUILD_BUILD_NUMBER.RELEASE
+  post_build:
+    commands:
+      - echo "Build is successful!"
