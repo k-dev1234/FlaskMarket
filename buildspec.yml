@@ -16,8 +16,8 @@ phases:
     commands:
       - echo "Building docker"
       - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD
-      - docker build -t $DOCKER_REGISTRY_USERNAME/$DOCKER_REGISTRY_APP_NAME:0.0.$CODEBUILD_BUILD_NUMBER.RELEASE .
-      - docker push $DOCKER_REGISTRY_USERNAME/$DOCKER_REGISTRY_APP_NAME:0.0.$CODEBUILD_BUILD_NUMBER.RELEASE
+      - docker build -t $DOCKER_REGISTRY_USERNAME/$DOCKER_REGISTRY_APP_NAME:latest .
+      - docker push $DOCKER_REGISTRY_USERNAME/$DOCKER_REGISTRY_APP_NAME:latest
   post_build:
     commands:
       - echo "Build is successful!"
