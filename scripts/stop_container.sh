@@ -2,4 +2,5 @@
 set -e
 
 # Stop the running container (if any)
-echo "Hi ill stop this"
+docker rm -f flask-app-run
+echo 'y' | docker system prune -a --volumes
